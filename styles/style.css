@@ -1,0 +1,59 @@
+.body {
+    height: 80vh;
+    width: auto;
+}
+
+.leg {
+    height: 40vh;
+}
+
+.hand {
+    height: 40vh;
+}
+
+.left-hand {
+    transform: rotate(25deg);
+}
+.right-hand {
+    transform: rotate(-25deg);
+    align: right;
+}
+
+.left-leg {
+    transform: rotate(25deg);
+}
+.right-leg {
+    transform: rotate(-25deg);
+}
+
+.center-block {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+ }
+
+
+.arrow {
+    width: 10vw;
+}
+
+.left-arrow {
+    transform: rotate(-180deg);
+}
+
+.up-arrow {
+    transform: rotate(-90deg);
+}
+
+.right-arrow {
+}
+/* start */
+.row {
+    height: 33vh
+}
+
+.box {
+    background-color: red;
+    opacity: 0;
+}
