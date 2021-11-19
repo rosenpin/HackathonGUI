@@ -1,4 +1,4 @@
-const SERVER_URL = "http://127.0.0.1:8000"
+const SERVER_URL = "http://192.168.43.234:8000"
 
 function receive(callback) {
     httpGetAsync(SERVER_URL, callback)
@@ -11,22 +11,6 @@ const INVALID = 0;
 let current = INVALID;
 const highlightColor = 'white'
 const backgroundColor = '#546E7A'
-
-function animateGrowShrink(el) {
-    anime({
-        targets: '#' + el,
-        scale: 1.5,
-        duration: 500,
-        complete: function (anim) {
-            anime({
-                targets: '#' + el,
-                duration: 500,
-                scale: 1,
-            });
-        }
-    });
-}
-
 
 function start() {
     console.log("starting" + current)
@@ -64,18 +48,8 @@ function stopPrevious() {
 
 let receiving = true;
 
-function stopReceiving() {
-    receiving = false;
-    setTimeout(function () {
-        receiving = true
-    }, 5000)
-}
-
 function select(part) {
-    //document.location = "part.html?part=" + current;
     $("#part" + part).css("background-color", "green")
-    animateGrowShrink("part" + part)
-    stopReceiving()
 }
 
 function parseInput(value) {

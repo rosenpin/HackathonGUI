@@ -3,7 +3,14 @@ body{
     background-size:     cover;                      /* <------ */
     background-repeat:   no-repeat;
     background-position: center center;
+    overflow: hidden;
 }
+
+#loading{
+    position: relative;
+    left: 600px;
+}
+
 .leg {
     height: 40vh;
 }
