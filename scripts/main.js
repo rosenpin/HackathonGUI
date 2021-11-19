@@ -1,12 +1,32 @@
-const SERVER_URL = "http://192.168.43.39:8000"
+const SERVER_URL = "http://127.0.0.1:8000"
 
 function receive(callback) {
     httpGetAsync(SERVER_URL, callback)
 }
 
 
+const refreshTime = 100;
+const animationTime = 3000;
 const INVALID = 0;
-var current = INVALID;
+let current = INVALID;
+const highlightColor = 'white'
+const backgroundColor = '#546E7A'
+
+function animateGrowShrink(el) {
+    anime({
+        targets: '#' + el,
+        scale: 1.5,
+        duration: 500,
+        complete: function (anim) {
+            anime({
+                targets: '#' + el,
+                duration: 500,
+                scale: 1,
+            });
+        }
+    });
+}
+
 
 function start() {
     console.log("starting" + current)
@@ -17,18 +37,9 @@ function start() {
     }
     const el = "#part" + _current;
 
-    let i = 0;
-    while (i < 100) {
-        i++;
-        const _i = i
-        if (current === _current) {
-            setTimeout(function () {
-                $(el).css('opacity', _i / 100)
-            }, 20 * i)
-        } else {
-            break
-        }
-    }
+    $(el).css("border-color", highlightColor)
+    $(el).css("background-color", backgroundColor)
+    $(el).animate({opacity: 0.7}, animationTime);
 }
 
 function httpGetAsync(theUrl, callback) {
@@ -41,14 +52,30 @@ function httpGetAsync(theUrl, callback) {
     xmlHttp.send(null);
 }
 
-function stopPrevious(index) {
-    console.log("stopping "+index)
-    var el = "#part" + index
-    $(el).css('opacity', 0.0)
+function stopPrevious() {
+    for (let i = 1; i <= 9; i++) {
+        const el = "#part" + i;
+        $(el).stop(true)
+        $(el).css('opacity', 0.0)
+        $(el).css("border-color", highlightColor)
+        $(el).css("background-color", backgroundColor)
+    }
+}
+
+let receiving = true;
+
+function stopReceiving() {
+    receiving = false;
+    setTimeout(function () {
+        receiving = true
+    }, 5000)
 }
 
 function select(part) {
     //document.location = "part.html?part=" + current;
+    $("#part" + part).css("background-color", "green")
+    animateGrowShrink("part" + part)
+    stopReceiving()
 }
 
 function parseInput(value) {
@@ -58,10 +85,13 @@ function parseInput(value) {
 }
 
 function handleInput(value) {
+    // remove loading after server connect
+    document.getElementById("loading").hidden = true;
+
     var result = parseInput(value)
     if (result.part == INVALID) {
         console.log("got 0")
-        stopPrevious(current)
+        stopPrevious()
         current = INVALID
         return
     }
@@ -82,16 +112,17 @@ function handleInput(value) {
 }
 
 function loopContent() {
-    document.getElementById("loading").hidden = true;
     console.log("trying to read from server")
-    receive(handleInput);
+    if (receiving) {
+        receive(handleInput);
+    }
     myLoop();             //  ..  again which will trigger another
 }
 
 function myLoop() {         //  create a loop function
     setTimeout(function () {   //  call a 3s setTimeout when the loop is called
         loopContent()
-    }, 500)
+    }, refreshTime)
 }
 
 loopContent()
